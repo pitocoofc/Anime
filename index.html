@@ -1,173 +1,111 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Ghost Streaming</title>
+<meta charset="UTF-8">
+<title>Gerador de Interface Ghost!</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+h1 { margin-bottom: 20px; }
 
-  <style>
-    /* RESET */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+input {
+  padding: 10px;
+  width: 300px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
 
-    body {
-      background: #0f0f0f;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-    /* LOADING */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
+#output {
+  margin-top: 30px;
+  width: 90%;
+  max-width: 600px;
+}
 
-    .loader-content {
-      text-align: center;
-    }
+#generated {
+  margin-top: 20px;
+  padding: 10px;
+  background: #222;
+  border-radius: 5px;
+  white-space: pre-wrap;
+}
 
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border: 4px solid #222;
-      border-top: 4px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* SITE */
-    #site {
-      display: none;
-      height: 100vh;
-      overflow: auto;
-    }
-
-    header {
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-
-    .card {
-      background: #1c1c1c;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .thumb {
-      height: 220px;
-      background: linear-gradient(135deg, #333, #111);
-      border-radius: 10px 10px 0 0;
-    }
-
-    .title {
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    /* PLAYER */
-    #player {
-      position: fixed;
-      inset: 0;
-      background: black;
-      display: none;
-      z-index: 999;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 22px;
-      cursor: pointer;
-      z-index: 1000;
-    }
-  </style>
+#preview {
+  margin-top: 20px;
+  padding: 20px;
+  background: #222;
+  border-radius: 10px;
+  min-height: 100px;
+}
+</style>
 </head>
-
 <body>
 
-<!-- LOADING -->
-<div id="loader">
-  <div class="loader-content">
-    <div class="spinner"></div>
-    <p>Inicializando...</p>
-  </div>
+<h1>Gerador de Interface Ghost!</h1>
+
+<div>
+  <input id="keywords" placeholder="Ex: Tema escuro, Botão vermelho">
+  <button onclick="generate()">Gerar</button>
 </div>
 
-<!-- SITE -->
-<div id="site">
-  <header>🎬 Ghost Streaming</header>
-
-  <div class="grid">
-    <div class="card" onclick="openPlayer()">
-      <div class="thumb"></div>
-      <div class="title">Ghost Explore — EP 01</div>
-    </div>
-  </div>
-</div>
-
-<!-- PLAYER -->
-<div id="player">
-  <div class="close" onclick="closePlayer()">✕</div>
-
-  <iframe 
-    src="https://youtu.be/ZnMQ0rbd7dw?si=jVWkeg4NpMCdW-Vi"
-    allowfullscreen>
-  </iframe>
+<div id="output">
+  <h3>Interface Gerada:</h3>
+  <div id="preview"></div>
+  <h3>Código HTML:</h3>
+  <div id="generated"></div>
 </div>
 
 <script>
-  // LOADING
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      document.getElementById("loader").style.display = "none";
-      document.getElementById("site").style.display = "block";
-      document.body.style.overflow = "auto";
-    }, 1500);
+function generate() {
+  const input = document.getElementById('keywords').value;
+  const keywords = input.split(',').map(k => k.trim().toLowerCase());
+  
+  // Configurações padrões
+  let bg = '#fff';
+  let btnColor = '#007bff';
+  let btnText = 'Botão';
+  let textColor = '#000';
+
+  // Interpretação simples das palavras-chave
+  keywords.forEach(word => {
+    if(word.includes('escuro')) bg = '#111', textColor = 'white';
+    if(word.includes('claro')) bg = '#fff', textColor = '#000';
+    if(word.includes('vermelho')) btnColor = 'red';
+    if(word.includes('verde')) btnColor = 'green';
+    if(word.includes('azul')) btnColor = 'blue';
+    if(word.includes('botão')) btnText = 'Botão';
   });
 
-  // PLAYER
-  function openPlayer() {
-    document.getElementById("player").style.display = "block";
-  }
+  // Gerar interface
+  const preview = `<div style="background:${bg};color:${textColor};padding:20px;border-radius:10px;">
+    <h2>Preview</h2>
+    <button style="background:${btnColor};color:white;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;">${btnText}</button>
+  </div>`;
 
-  function closePlayer() {
-    document.getElementById("player").style.display = "none";
-    const iframe = document.querySelector("iframe");
-    iframe.src = iframe.src; // reseta o vídeo
-  }
+  // Gerar código
+  const code = `<div style="background:${bg};color:${textColor};padding:20px;border-radius:10px;">
+  <h2>Preview</h2>
+  <button style="background:${btnColor};color:white;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;">${btnText}</button>
+</div>`;
+
+  document.getElementById('preview').innerHTML = preview;
+  document.getElementById('generated').innerText = code;
+}
 </script>
 
 </body>
