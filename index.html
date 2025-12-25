@@ -1,57 +1,174 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>Ghost Streaming</title>
+
   <style>
-    body {
+    /* RESET */
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       background: #0f0f0f;
       color: white;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
+
+    /* LOADING */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #222;
+      border-top: 4px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* SITE */
+    #site {
+      display: none;
+      height: 100vh;
+      overflow: auto;
+    }
+
     header {
       padding: 20px;
       font-size: 24px;
       font-weight: bold;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 16px;
       padding: 20px;
     }
+
     .card {
       background: #1c1c1c;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       transition: transform 0.2s;
     }
+
     .card:hover {
       transform: scale(1.05);
     }
+
     .thumb {
       height: 220px;
-      background: #333;
-      border-radius: 8px 8px 0 0;
+      background: linear-gradient(135deg, #333, #111);
+      border-radius: 10px 10px 0 0;
     }
+
     .title {
       padding: 10px;
       font-size: 14px;
     }
+
+    /* PLAYER */
+    #player {
+      position: fixed;
+      inset: 0;
+      background: black;
+      display: none;
+      z-index: 999;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 1000;
+    }
   </style>
 </head>
+
 <body>
 
-<header>🎬 Ghost Streaming</header>
-
-<div class="grid">
-  <div class="card" onclick="alert('EP 1')">
-    <div class="thumb"></div>
-    <div class="title">Episódio 01</div>
+<!-- LOADING -->
+<div id="loader">
+  <div class="loader-content">
+    <div class="spinner"></div>
+    <p>Inicializando...</p>
   </div>
 </div>
+
+<!-- SITE -->
+<div id="site">
+  <header>🎬 Ghost Streaming</header>
+
+  <div class="grid">
+    <div class="card" onclick="openPlayer()">
+      <div class="thumb"></div>
+      <div class="title">Ghost Explore — EP 01</div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER -->
+<div id="player">
+  <div class="close" onclick="closePlayer()">✕</div>
+
+  <iframe 
+    src="https://www.youtube.com/embed/ID_DO_VIDEO"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<script>
+  // LOADING
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("site").style.display = "block";
+      document.body.style.overflow = "auto";
+    }, 1500);
+  });
+
+  // PLAYER
+  function openPlayer() {
+    document.getElementById("player").style.display = "block";
+  }
+
+  function closePlayer() {
+    document.getElementById("player").style.display = "none";
+    const iframe = document.querySelector("iframe");
+    iframe.src = iframe.src; // reseta o vídeo
+  }
+</script>
 
 </body>
 </html>
