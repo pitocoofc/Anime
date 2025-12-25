@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Ghost Streaming</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+    .card {
+      background: #1c1c1c;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .thumb {
+      height: 220px;
+      background: #333;
+      border-radius: 8px 8px 0 0;
+    }
+    .title {
+      padding: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>🎬 Ghost Streaming</header>
+
+<div class="grid">
+  <div class="card" onclick="alert('EP 1')">
+    <div class="thumb"></div>
+    <div class="title">Episódio 01</div>
+  </div>
+</div>
+
+</body>
+</html>
